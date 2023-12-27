@@ -24,12 +24,3 @@ if __name__ == "__main__":
         with open(csv_file_path, 'a', newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
             csv_writer.writerow([qr,l1])
-        
-        """
-        print(f'                                           {name}')
-        for i in range(0,70):
-            if l1[i]!=l2[i]:
-                print(f'                                           ({i+1})')
-                utils.print_img(row[i])
-                print(l1[i],l2[i])
-        """
