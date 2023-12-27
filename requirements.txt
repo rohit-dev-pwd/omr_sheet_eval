@@ -1,0 +1,6 @@
+ipython 
+matplotlib 
+imutils 
+pyzbar 
+opencv-python 
+scipy
