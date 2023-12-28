@@ -94,40 +94,26 @@ def rowSplit(name):
         for j in split_row[i]: 
             sorted_split_row.append(j)
     return qr,sorted_split_row
-def ansByHorizontalSplit(img):
+
+def findAns(row):
     kk = []
     for j in range(0,70):
-        col = np.hsplit(img[j],4) 
+        col = np.hsplit(row[j],4)
         ss = []
         for i in col:
-            ss.append(cv2.countNonZero(i))
-        if ss.index(max(ss)) == 0:
-            kk.append(f'{j+1} : 1')
-        elif ss.index(max(ss)) == 1:
-            kk.append(f'{j+1} : 2')
-        elif ss.index(max(ss)) == 2:
-            kk.append(f'{j+1} : 3')
-        elif ss.index(max(ss)) == 3:
-            kk.append(f'{j+1} : 4')
-    return kk
-
-def ansByCricleRadious(img):
-    center_x = [22,74,122,174]
-    center_y = [23,23,23,23]
-    radius = 18
-    kk = []
-    for j in range(0,70):
-        ss = []
-        for i in range(0,4):
-            roi = img[j][center_y[i] - radius:center_y[i] + radius, center_x[i] - radius:center_x[i] + radius]
+            center = (25, 23)  
+            radius = 16           
+            mask = i.copy()
+            cv2.circle(mask, center, radius, (0, 255, 0), thickness=cv2.FILLED)
+            roi = cv2.bitwise_and(i, cv2.bitwise_not(mask))
+            roi = cv2.Canny(roi, 50, 150)
             ss.append(np.count_nonzero(roi))
-        if ss.index(max(ss)) == 0:
-            kk.append(f'{j+1} : 1')
-        elif ss.index(max(ss)) == 1:
-            kk.append(f'{j+1} : 2')
-        elif ss.index(max(ss)) == 2:
-            kk.append(f'{j+1} : 3')
-        elif ss.index(max(ss)) == 3:
-            kk.append(f'{j+1} : 4')
-    return kk
+        k = sorted(ss)
+        if k[3]-k[0]<50 and k[3]-k[2]<50:
+            kk.append(-1)
+        elif k[1]-k[0]<50 and k[2]-k[1]>50:
+            kk.append(-2)
+        else:
+            kk.append(ss.index(min(ss))+1)
 
+    return kk
