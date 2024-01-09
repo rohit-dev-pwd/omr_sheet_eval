@@ -1,15 +1,20 @@
-import utils, csv 
+import utils, os, csv
+
+current_directory = os.getcwd()
+omr_files = [file for file in os.listdir(current_directory) if file.endswith('.jpg') and file.startswith('d')]
+omr_top_files = [file for file in os.listdir(current_directory) if file.endswith('.jpg') and file.startswith('t')]
 
 
-if __name__ == "__main__":
-    names = ['1.2.jpg','2.2.jpg','3.2.jpg','4.2.jpg','5.2.jpg']
-    #names = ['5.2.jpg']
-    csv_file_path = 'output.csv'
+csv_output = 'output.csv'
+csv_setcode = 'setcode.csv'
+csv_anskey = 'anskey.csv'
+csv_mark = 'marks.csv'
 
-    for name in names:
-        qr,row = utils.rowSplit(name)
-        ans = utils.findAns(row)
+utils.omrTocsv(omr_files,csv_output)
+utils.omrTopTocsv(omr_top_files, csv_setcode)  
 
-        with open(csv_file_path, 'a', newline='') as csv_file:
-            csv_writer = csv.writer(csv_file)
-            csv_writer.writerow([qr,ans])
+data = utils.getMarkList(csv_output)
+qrWithSet = utils.getqrRollSet(csv_setcode)
+qrSetandres = utils.getAnskey(csv_anskey)
+
+utils.generateResultSheet(csv_mark,data,qrWithSet,qrSetandres)
