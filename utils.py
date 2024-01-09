@@ -43,7 +43,7 @@ def print_img(img):
     plt.show()
 
 ##
-#add cropiing in code for both top and bottom in need 
+#add cropiing in code for both top and bottom if need 
 ##
 
 ##
